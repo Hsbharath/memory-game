@@ -2,7 +2,7 @@ extends Control
 
 const CONTINENT_BUTTON_SCENE = preload("res://scenes/components/ContinentButton.tscn")
 
-@onready var continents_container: HFlowContainer = $ScrollContainer/ContinentsContainer
+@onready var continents_container: GridContainer = $ScrollContainer/CenterWrapper/ContinentsContainer
 @onready var back_button: Button = $BackButton
 
 func _ready() -> void:

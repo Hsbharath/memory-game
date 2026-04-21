@@ -215,17 +215,17 @@ theme_override_constants/separation = 8
 
 [node name="Star1" type="Label" parent="CompleteLayer/CompletePanel/Panel/VBoxContainer/StarsContainer"]
 layout_mode = 2
-text = "★"
+text = "*"
 theme_override_font_sizes/font_size = 40
 
 [node name="Star2" type="Label" parent="CompleteLayer/CompletePanel/Panel/VBoxContainer/StarsContainer"]
 layout_mode = 2
-text = "★"
+text = "*"
 theme_override_font_sizes/font_size = 40
 
 [node name="Star3" type="Label" parent="CompleteLayer/CompletePanel/Panel/VBoxContainer/StarsContainer"]
 layout_mode = 2
-text = "★"
+text = "*"
 theme_override_font_sizes/font_size = 40
 
 [node name="ScoreLabel" type="Label" parent="CompleteLayer/CompletePanel/Panel/VBoxContainer"]
@@ -247,7 +247,7 @@ text = "Replay"
 [node name="NextButton" type="Button" parent="CompleteLayer/CompletePanel/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 custom_minimum_size = Vector2(90, 44)
-text = "Next →"
+text = "Next >"
 
 [node name="MenuButton" type="Button" parent="CompleteLayer/CompletePanel/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2

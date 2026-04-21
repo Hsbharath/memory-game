@@ -29,16 +29,17 @@ func setup(img_id: String, idx: int, back_texture: Texture2D) -> void:
 	card_index = idx
 
 	if back_texture != null:
-		# tint the back rect with texture — simplified: just keep color
-		pass
+		back_rect.color = Color(0.15, 0.25, 0.55, 1)
 
-	if img_id != "" and ResourceLoader.exists(img_id):
-		front_texture.texture = load(img_id)
-	else:
-		# No art yet — show the filename as readable text so cards are visible
-		var short_name = img_id.get_file().get_basename().replace("_", " ")
+	front_texture.texture = null
+	if img_id != "":
+		var tex = load(img_id) if ResourceLoader.exists(img_id) else null
+		if tex is Texture2D:
+			front_texture.texture = tex
+
+	if front_texture.texture == null:
+		var short_name = img_id.get_file().get_basename().replace("_", " ").replace(",", "")
 		front_label.text = short_name
-		front_label.visible = false  # shown when flipped to front
 
 func flip_up(animate: bool = true) -> void:
 	if state == State.MATCHED or state == State.LOCKED or state == State.FACE_UP:
@@ -103,11 +104,12 @@ func _animate_flip(to_front: bool) -> void:
 func _show_front() -> void:
 	back_rect.visible = false
 	back_label.visible = false
-	front_rect.visible = true
 	if front_texture.texture != null:
+		front_rect.visible = false
 		front_texture.visible = true
 		front_label.visible = false
 	else:
+		front_rect.visible = true
 		front_texture.visible = false
 		front_label.visible = true
 
