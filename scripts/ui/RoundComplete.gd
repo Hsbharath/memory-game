@@ -30,19 +30,21 @@ func _display_stars(count: int) -> void:
 
 func _on_next() -> void:
 	AudioController.play_sfx("button")
+	var gameplay = get_parent()
 	var scene = load("res://scenes/screens/Gameplay.tscn").instantiate()
 	scene.continent_id = _continent_id
 	scene.round_number = _round_number + 1
 	get_tree().root.add_child(scene)
-	get_owner().queue_free()
+	gameplay.queue_free()
 
 func _on_replay() -> void:
 	AudioController.play_sfx("button")
+	var gameplay = get_parent()
 	var scene = load("res://scenes/screens/Gameplay.tscn").instantiate()
 	scene.continent_id = _continent_id
 	scene.round_number = _round_number
 	get_tree().root.add_child(scene)
-	get_owner().queue_free()
+	gameplay.queue_free()
 
 func _on_menu() -> void:
 	AudioController.play_sfx("button")

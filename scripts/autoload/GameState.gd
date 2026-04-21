@@ -13,6 +13,10 @@ const CONTINENT_ORDER = [
 	"south_america", "australia", "antarctica"
 ]
 
+# Set before changing to Gameplay scene so _ready can read them
+var pending_continent_id: String = ""
+var pending_round_number: int = 1
+
 var current_continent_id: String = ""
 var current_round_number: int = 0
 var current_score: int = 0

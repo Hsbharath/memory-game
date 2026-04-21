@@ -21,21 +21,33 @@ var _back_texture: Texture2D = null
 
 func build(continent_id: String, round_number: int) -> void:
 	var config = DataRepository.get_round_config(continent_id, round_number)
-	var continent = DataRepository.get_continent(continent_id)
+	if config.is_empty():
+		push_error("Board: empty config for '%s' round %d" % [continent_id, round_number])
+		return
 
+	var continent = DataRepository.get_continent(continent_id)
 	_grid_size = config.get("gridSize", 2)
 	_uses_center = config.get("usesCenterSpecialTile", false)
+	_back_texture = null
 
-	if ResourceLoader.exists(continent.get("cardBackArt", "")):
-		_back_texture = load(continent["cardBackArt"])
+	var back_path = continent.get("cardBackArt", "")
+	if back_path != "" and ResourceLoader.exists(back_path):
+		_back_texture = load(back_path)
 
 	var images = DataRepository.get_images_for_round(continent_id, round_number)
 	_total_pairs = images.size() / 2
 	GameState.total_pairs = _total_pairs
 
-	_clear()
+	_clear_grid()
 	grid.columns = _grid_size
-	_size_cards()
+
+	var card_size = _calculate_card_size()
+	var sep = float(grid.get_theme_constant("h_separation"))
+	var board_side = _grid_size * card_size + (_grid_size - 1) * sep
+
+	# Size the Board node itself so CenterContainer can center it
+	custom_minimum_size = Vector2(board_side, board_side)
+	size = Vector2(board_side, board_side)
 
 	var center_index = (_grid_size * _grid_size) / 2 if _uses_center else -1
 	var image_cursor = 0
@@ -43,10 +55,14 @@ func build(continent_id: String, round_number: int) -> void:
 	for i in range(_grid_size * _grid_size):
 		if i == center_index:
 			var special = SPECIAL_TILE_SCENE.instantiate()
-			special.setup(continent_id)
+			special.custom_minimum_size = Vector2(card_size, card_size)
 			grid.add_child(special)
+			special.setup(continent_id)
 		else:
+			if image_cursor >= images.size():
+				break
 			var card: Card = CARD_SCENE.instantiate()
+			card.custom_minimum_size = Vector2(card_size, card_size)
 			grid.add_child(card)
 			card.setup(images[image_cursor], i, _back_texture)
 			card.card_clicked.connect(_on_card_clicked)
@@ -111,8 +127,10 @@ func _on_mismatch() -> void:
 	AudioController.play_sfx("mismatch")
 	GameState.register_mismatch()
 	await get_tree().create_timer(MISMATCH_DELAY).timeout
-	_first_card.flip_down()
-	_second_card.flip_down()
+	if is_instance_valid(_first_card):
+		_first_card.flip_down()
+	if is_instance_valid(_second_card):
+		_second_card.flip_down()
 	_reset_selection()
 
 func _reset_selection() -> void:
@@ -120,7 +138,7 @@ func _reset_selection() -> void:
 	_second_card = null
 	_is_locked = false
 
-func _clear() -> void:
+func _clear_grid() -> void:
 	for child in grid.get_children():
 		child.queue_free()
 	_cards.clear()
@@ -129,11 +147,13 @@ func _clear() -> void:
 	_is_locked = false
 	_matched_count = 0
 
-func _size_cards() -> void:
-	var available = size
-	var card_size = min(
-		(available.x - (_grid_size - 1) * grid.get_theme_constant("h_separation")) / _grid_size,
-		(available.y - (_grid_size - 1) * grid.get_theme_constant("v_separation")) / _grid_size
-	)
-	for child in grid.get_children():
-		child.custom_minimum_size = Vector2(card_size, card_size)
+func _calculate_card_size() -> float:
+	var vp = get_viewport().get_visible_rect().size
+	var sep = float(grid.get_theme_constant("h_separation"))
+	var cols = float(_grid_size)
+	# Leave 32px padding each side, 64px for HUD bar
+	var available_w = vp.x - 64.0
+	var available_h = vp.y - 64.0 - 32.0
+	var size_from_w = (available_w - (cols - 1.0) * sep) / cols
+	var size_from_h = (available_h - (cols - 1.0) * sep) / cols
+	return maxf(40.0, minf(size_from_w, size_from_h))

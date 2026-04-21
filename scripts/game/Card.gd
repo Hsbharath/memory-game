@@ -5,55 +5,69 @@ signal card_clicked(card: Card)
 
 enum State { FACE_DOWN, FLIPPING, FACE_UP, MATCHED, LOCKED }
 
-@export var flip_duration: float = 0.25
+@export var flip_duration: float = 0.2
 
 var image_id: String = ""
 var card_index: int = -1
 var state: State = State.FACE_DOWN
 
-@onready var front_face: TextureRect = $Front
-@onready var back_face: TextureRect = $Back
+@onready var back_rect: ColorRect = $Back
+@onready var back_label: Label = $BackLabel
+@onready var front_rect: ColorRect = $Front
+@onready var front_texture: TextureRect = $FrontTexture
+@onready var front_label: Label = $FrontLabel
 @onready var match_overlay: ColorRect = $MatchOverlay
 @onready var button: Button = $Button
 
 func _ready() -> void:
 	button.pressed.connect(_on_pressed)
 	match_overlay.visible = false
-	front_face.visible = false
-	back_face.visible = true
+	_show_back()
 
 func setup(img_id: String, idx: int, back_texture: Texture2D) -> void:
 	image_id = img_id
 	card_index = idx
-	back_face.texture = back_texture
-	if ResourceLoader.exists(img_id):
-		front_face.texture = load(img_id)
+
+	if back_texture != null:
+		# tint the back rect with texture — simplified: just keep color
+		pass
+
+	if img_id != "" and ResourceLoader.exists(img_id):
+		front_texture.texture = load(img_id)
+	else:
+		# No art yet — show the filename as readable text so cards are visible
+		var short_name = img_id.get_file().get_basename().replace("_", " ")
+		front_label.text = short_name
+		front_label.visible = false  # shown when flipped to front
 
 func flip_up(animate: bool = true) -> void:
-	if state == State.MATCHED or state == State.LOCKED:
+	if state == State.MATCHED or state == State.LOCKED or state == State.FACE_UP:
 		return
 	state = State.FLIPPING
 	button.disabled = true
-	if animate and not SaveSystem.get_setting("reduced_motion"):
+	if animate:
 		_animate_flip(true)
 	else:
 		_show_front()
+		state = State.FACE_UP
 
 func flip_down(animate: bool = true) -> void:
-	if state == State.MATCHED or state == State.LOCKED:
+	if state == State.MATCHED or state == State.LOCKED or state == State.FACE_DOWN:
 		return
 	state = State.FLIPPING
-	if animate and not SaveSystem.get_setting("reduced_motion"):
+	if animate:
 		_animate_flip(false)
 	else:
 		_show_back()
+		state = State.FACE_DOWN
+		button.disabled = false
 
 func set_matched() -> void:
 	state = State.MATCHED
 	button.disabled = true
 	match_overlay.visible = true
 	var tween = create_tween()
-	tween.tween_property(match_overlay, "modulate:a", 0.0, 0.6)
+	tween.tween_property(match_overlay, "modulate:a", 0.0, 0.8)
 
 func set_locked(locked: bool) -> void:
 	if state == State.MATCHED:
@@ -77,18 +91,29 @@ func _animate_flip(to_front: bool) -> void:
 			_show_back()
 	)
 	tween.tween_property(self, "scale:x", 1.0, flip_duration * 0.5)
-	await tween.finished
-	if to_front:
-		state = State.FACE_UP
-		button.disabled = true
-	else:
-		state = State.FACE_DOWN
-		button.disabled = false
+	tween.tween_callback(func():
+		if to_front:
+			state = State.FACE_UP
+			button.disabled = true
+		else:
+			state = State.FACE_DOWN
+			button.disabled = false
+	)
 
 func _show_front() -> void:
-	front_face.visible = true
-	back_face.visible = false
+	back_rect.visible = false
+	back_label.visible = false
+	front_rect.visible = true
+	if front_texture.texture != null:
+		front_texture.visible = true
+		front_label.visible = false
+	else:
+		front_texture.visible = false
+		front_label.visible = true
 
 func _show_back() -> void:
-	front_face.visible = false
-	back_face.visible = true
+	back_rect.visible = true
+	back_label.visible = true
+	front_rect.visible = false
+	front_texture.visible = false
+	front_label.visible = false

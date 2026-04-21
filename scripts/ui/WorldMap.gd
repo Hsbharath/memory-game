@@ -23,12 +23,8 @@ func _populate_continents() -> void:
 func _on_continent_selected(continent_id: String, is_unlocked: bool) -> void:
 	if not is_unlocked:
 		return
-	AudioController.play_sfx("button")
-	var scene = load("res://scenes/screens/RoundSelect.tscn").instantiate()
-	scene.continent_id = continent_id
-	get_tree().root.add_child(scene)
-	queue_free()
+	GameState.pending_continent_id = continent_id
+	get_tree().change_scene_to_file("res://scenes/screens/RoundSelect.tscn")
 
 func _on_back() -> void:
-	AudioController.play_sfx("button")
 	get_tree().change_scene_to_file("res://scenes/screens/MainMenu.tscn")

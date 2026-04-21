@@ -3,17 +3,21 @@
 ; since the parameters that go here are not all obvious.
 ;
 ; Format:
-;   [section] ; section goes in []
+;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
 config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
 config/name="Memory Map"
 config/description="A progressive memory matching game exploring the world's continents."
 run/main_scene="res://scenes/screens/MainMenu.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://assets/images/ui/icon.png"
 
 [autoload]
@@ -27,9 +31,7 @@ DataRepository="*res://scripts/autoload/DataRepository.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/resizable=true
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [input]
 
@@ -39,7 +41,3 @@ ui_accept={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
-
-[rendering]
-
-renderer/rendering_method="forward_plus"

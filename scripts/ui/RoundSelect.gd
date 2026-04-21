@@ -9,6 +9,10 @@ var continent_id: String = ""
 @onready var continent_label: Label = $ContinentLabel
 
 func _ready() -> void:
+	# Read continent_id from GameState if not set directly
+	if continent_id == "":
+		continent_id = GameState.pending_continent_id
+
 	back_button.pressed.connect(_on_back)
 	var continent = DataRepository.get_continent(continent_id)
 	continent_label.text = continent.get("name", "")
@@ -32,13 +36,9 @@ func _populate_rounds() -> void:
 func _on_round_selected(round_number: int, is_unlocked: bool) -> void:
 	if not is_unlocked:
 		return
-	AudioController.play_sfx("button")
-	var scene = load("res://scenes/screens/Gameplay.tscn").instantiate()
-	scene.continent_id = continent_id
-	scene.round_number = round_number
-	get_tree().root.add_child(scene)
-	queue_free()
+	GameState.pending_continent_id = continent_id
+	GameState.pending_round_number = round_number
+	get_tree().change_scene_to_file("res://scenes/screens/Gameplay.tscn")
 
 func _on_back() -> void:
-	AudioController.play_sfx("button")
 	get_tree().change_scene_to_file("res://scenes/screens/WorldMap.tscn")
