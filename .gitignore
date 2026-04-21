@@ -1,0 +1,30 @@
+# Godot editor files
+.godot/
+*.uid
+
+# Export presets (contains personal paths)
+export_presets.cfg
+
+# Mono/C# specific
+.mono/
+data_*/
+mono_crash.*.json
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# User save data (local only)
+user://
+
+# Logs
+logs/
+*.log
+
+# Godot import cache (regenerated on open)
+**/.import/
+
+# Build output
+build/
+export/

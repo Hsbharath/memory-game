@@ -1,0 +1,105 @@
+{
+  "continentId": "africa",
+  "rounds": [
+    {
+      "roundNumber": 1,
+      "gridSize": 2,
+      "usesCenterSpecialTile": false,
+      "previewSeconds": 5.0,
+      "timerSeconds": 0,
+      "hintCount": 3,
+      "scoreMultiplier": 1.0,
+      "modeType": "tutorial"
+    },
+    {
+      "roundNumber": 2,
+      "gridSize": 3,
+      "usesCenterSpecialTile": true,
+      "previewSeconds": 4.0,
+      "timerSeconds": 0,
+      "hintCount": 3,
+      "scoreMultiplier": 1.0,
+      "modeType": "standard"
+    },
+    {
+      "roundNumber": 3,
+      "gridSize": 4,
+      "usesCenterSpecialTile": false,
+      "previewSeconds": 4.0,
+      "timerSeconds": 0,
+      "hintCount": 2,
+      "scoreMultiplier": 1.2,
+      "modeType": "standard"
+    },
+    {
+      "roundNumber": 4,
+      "gridSize": 5,
+      "usesCenterSpecialTile": true,
+      "previewSeconds": 3.5,
+      "timerSeconds": 0,
+      "hintCount": 2,
+      "scoreMultiplier": 1.3,
+      "modeType": "standard"
+    },
+    {
+      "roundNumber": 5,
+      "gridSize": 6,
+      "usesCenterSpecialTile": false,
+      "previewSeconds": 3.0,
+      "timerSeconds": 120,
+      "hintCount": 2,
+      "scoreMultiplier": 1.5,
+      "modeType": "standard"
+    },
+    {
+      "roundNumber": 6,
+      "gridSize": 7,
+      "usesCenterSpecialTile": true,
+      "previewSeconds": 2.5,
+      "timerSeconds": 150,
+      "hintCount": 1,
+      "scoreMultiplier": 1.7,
+      "modeType": "standard"
+    },
+    {
+      "roundNumber": 7,
+      "gridSize": 8,
+      "usesCenterSpecialTile": false,
+      "previewSeconds": 2.0,
+      "timerSeconds": 180,
+      "hintCount": 1,
+      "scoreMultiplier": 2.0,
+      "modeType": "standard"
+    },
+    {
+      "roundNumber": 8,
+      "gridSize": 9,
+      "usesCenterSpecialTile": true,
+      "previewSeconds": 2.0,
+      "timerSeconds": 210,
+      "hintCount": 1,
+      "scoreMultiplier": 2.2,
+      "modeType": "standard"
+    },
+    {
+      "roundNumber": 9,
+      "gridSize": 8,
+      "usesCenterSpecialTile": false,
+      "previewSeconds": 1.5,
+      "timerSeconds": 90,
+      "hintCount": 0,
+      "scoreMultiplier": 2.5,
+      "modeType": "speed"
+    },
+    {
+      "roundNumber": 10,
+      "gridSize": 6,
+      "usesCenterSpecialTile": false,
+      "previewSeconds": 1.0,
+      "timerSeconds": 60,
+      "hintCount": 0,
+      "scoreMultiplier": 3.0,
+      "modeType": "finale"
+    }
+  ]
+}

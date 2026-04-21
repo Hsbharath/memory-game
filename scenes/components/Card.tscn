@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://card_scene"]
+
+[ext_resource type="Script" path="res://scripts/game/Card.gd" id="1_card"]
+
+[node name="Card" type="Control"]
+custom_minimum_size = Vector2(80, 80)
+script = ExtResource("1_card")
+
+[node name="Back" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Front" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand_mode = 1
+stretch_mode = 5
+visible = false
+
+[node name="MatchOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.2, 0.9, 0.3, 0.45)
+visible = false
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+flat = true

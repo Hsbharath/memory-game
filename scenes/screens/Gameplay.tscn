@@ -1,0 +1,255 @@
+[gd_scene load_steps=5 format=3 uid="uid://gameplay"]
+
+[ext_resource type="Script" path="res://scripts/ui/Gameplay.gd" id="1_gp"]
+[ext_resource type="Script" path="res://scripts/game/Board.gd" id="2_board"]
+[ext_resource type="Script" path="res://scripts/ui/HUD.gd" id="3_hud"]
+[ext_resource type="Script" path="res://scripts/ui/PauseMenu.gd" id="4_pause"]
+[ext_resource type="Script" path="res://scripts/ui/RoundComplete.gd" id="5_rc"]
+
+[node name="Gameplay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_gp")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.07, 0.10, 0.18, 1)
+
+[node name="Board" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 64.0
+offset_bottom = 0.0
+script = ExtResource("2_board")
+
+[node name="GridContainer" type="GridContainer" parent="Board"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_hud")
+
+[node name="HUDPanel" type="Panel" parent="HUD"]
+layout_mode = 3
+anchors_preset = 12
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_bottom = 60.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/HUDPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_right = -12.0
+theme_override_constants/separation = 16
+
+[node name="RoundLabel" type="Label" parent="HUD/HUDPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Round 1"
+theme_override_font_sizes/font_size = 18
+
+[node name="ScoreLabel" type="Label" parent="HUD/HUDPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 18
+
+[node name="ComboLabel" type="Label" parent="HUD/HUDPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+modulate = Color(1, 0.9, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+visible = false
+
+[node name="TimerLabel" type="Label" parent="HUD/HUDPanel/HBoxContainer"]
+layout_mode = 2
+text = "2:00"
+theme_override_font_sizes/font_size = 20
+
+[node name="HintsLabel" type="Label" parent="HUD/HUDPanel/HBoxContainer"]
+layout_mode = 2
+text = "Hints: 3"
+theme_override_font_sizes/font_size = 16
+
+[node name="HintButton" type="Button" parent="HUD/HUDPanel/HBoxContainer"]
+layout_mode = 2
+text = "Hint"
+
+[node name="PauseButton" type="Button" parent="HUD/HUDPanel/HBoxContainer"]
+layout_mode = 2
+text = "||"
+
+[node name="PausePanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("4_pause")
+visible = false
+
+[node name="Dimmer" type="ColorRect" parent="PausePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="Panel" parent="PausePanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -140.0
+offset_right = 140.0
+offset_bottom = 140.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PausePanel/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+theme_override_constants/separation = 12
+
+[node name="PauseTitle" type="Label" parent="PausePanel/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Paused"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="ResumeButton" type="Button" parent="PausePanel/Panel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="PausePanel/Panel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Restart"
+
+[node name="SettingsButton" type="Button" parent="PausePanel/Panel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="PausePanel/Panel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Quit to Menu"
+
+[node name="RoundCompletePanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("5_rc")
+visible = false
+
+[node name="Dimmer" type="ColorRect" parent="RoundCompletePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="Panel" type="Panel" parent="RoundCompletePanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -160.0
+offset_right = 180.0
+offset_bottom = 160.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RoundCompletePanel/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+theme_override_constants/separation = 14
+
+[node name="CompleteLabel" type="Label" parent="RoundCompletePanel/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Round Complete!"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="StarsContainer" type="HBoxContainer" parent="RoundCompletePanel/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Star1" type="Label" parent="RoundCompletePanel/Panel/VBoxContainer/StarsContainer"]
+layout_mode = 2
+text = "★"
+theme_override_font_sizes/font_size = 36
+
+[node name="Star2" type="Label" parent="RoundCompletePanel/Panel/VBoxContainer/StarsContainer"]
+layout_mode = 2
+text = "★"
+theme_override_font_sizes/font_size = 36
+
+[node name="Star3" type="Label" parent="RoundCompletePanel/Panel/VBoxContainer/StarsContainer"]
+layout_mode = 2
+text = "★"
+theme_override_font_sizes/font_size = 36
+
+[node name="ScoreLabel" type="Label" parent="RoundCompletePanel/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Score: 0"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RoundCompletePanel/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="ReplayButton" type="Button" parent="RoundCompletePanel/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(90, 44)
+text = "Replay"
+
+[node name="NextButton" type="Button" parent="RoundCompletePanel/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(90, 44)
+text = "Next →"
+
+[node name="MenuButton" type="Button" parent="RoundCompletePanel/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(90, 44)
+text = "Menu"
