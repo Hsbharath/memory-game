@@ -7,12 +7,14 @@ enum State { FACE_DOWN, FLIPPING, FACE_UP, MATCHED, LOCKED }
 
 @export var flip_duration: float = 0.2
 
+const LOGO_PATH = "res://assets/images/memory_map.jpeg"
+
 var image_id: String = ""
 var card_index: int = -1
 var state: State = State.FACE_DOWN
 
 @onready var back_rect: ColorRect = $Back
-@onready var back_label: Label = $BackLabel
+@onready var back_logo: TextureRect = $BackLogo
 @onready var front_rect: ColorRect = $Front
 @onready var front_texture: TextureRect = $FrontTexture
 @onready var front_label: Label = $FrontLabel
@@ -20,6 +22,8 @@ var state: State = State.FACE_DOWN
 @onready var button: Button = $Button
 
 func _ready() -> void:
+	if ResourceLoader.exists(LOGO_PATH):
+		back_logo.texture = load(LOGO_PATH)
 	button.pressed.connect(_on_pressed)
 	match_overlay.visible = false
 	_show_back()
@@ -27,9 +31,6 @@ func _ready() -> void:
 func setup(img_id: String, idx: int, back_texture: Texture2D) -> void:
 	image_id = img_id
 	card_index = idx
-
-	if back_texture != null:
-		back_rect.color = Color(0.15, 0.25, 0.55, 1)
 
 	front_texture.texture = null
 	if img_id != "":
@@ -103,7 +104,7 @@ func _animate_flip(to_front: bool) -> void:
 
 func _show_front() -> void:
 	back_rect.visible = false
-	back_label.visible = false
+	back_logo.visible = false
 	if front_texture.texture != null:
 		front_rect.visible = false
 		front_texture.visible = true
@@ -115,7 +116,7 @@ func _show_front() -> void:
 
 func _show_back() -> void:
 	back_rect.visible = true
-	back_label.visible = true
+	back_logo.visible = true
 	front_rect.visible = false
 	front_texture.visible = false
 	front_label.visible = false

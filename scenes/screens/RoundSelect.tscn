@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://round_select"]
+[gd_scene load_steps=3 format=3 uid="uid://round_select"]
 
 [ext_resource type="Script" path="res://scripts/ui/RoundSelect.gd" id="1_rs"]
+[ext_resource type="Script" path="res://scripts/ui/PathDrawer.gd" id="2_pd"]
 
 [node name="RoundSelect" type="Control"]
 layout_mode = 3
@@ -9,49 +10,86 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_rs")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="MapBackground" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.07, 0.10, 0.18, 1)
+expand_mode = 1
+stretch_mode = 1
+mouse_filter = 2
 
-[node name="ContinentLabel" type="Label" parent="."]
+[node name="Overlay" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -200.0
-offset_top = 20.0
-offset_right = 200.0
-offset_bottom = 70.0
-text = "Continent"
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.35)
+mouse_filter = 2
+
+[node name="PathCanvas" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("2_pd")
+
+[node name="PinsContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="TopBar" type="Panel" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+offset_bottom = 64.0
+
+[node name="ContinentLabel" type="Label" parent="TopBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_right = -16.0
+text = "Africa"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 36
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 28
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="BottomBar" type="Panel" parent="."]
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+
+[node name="BackButton" type="Button" parent="BottomBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+grow_horizontal = 2
+flat = true
+mouse_default_cursor_shape = 2
+
+[node name="BackIcon" type="TextureRect" parent="BottomBar/BackButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 80.0
-offset_bottom = -80.0
-
-[node name="RoundsContainer" type="GridContainer" parent="ScrollContainer"]
-layout_mode = 2
-columns = 5
-size_flags_horizontal = 3
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
-
-[node name="BackButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.0
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -60.0
-offset_right = 120.0
-offset_bottom = -20.0
-text = "< Back"
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+expand_mode = 0
+stretch_mode = 6
+mouse_filter = 2

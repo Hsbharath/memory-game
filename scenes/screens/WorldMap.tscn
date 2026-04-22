@@ -52,11 +52,28 @@ theme_override_constants/v_separation = 24
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -54.0
-offset_right = 120.0
-offset_bottom = -14.0
-text = "< Back"
+offset_left = -30.0
+offset_top = -72.0
+offset_right = 30.0
+offset_bottom = -12.0
+grow_horizontal = 2
+flat = true
 mouse_default_cursor_shape = 2
+
+[node name="BackIcon" type="TextureRect" parent="BackButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+expand_mode = 0
+stretch_mode = 6
+mouse_filter = 2

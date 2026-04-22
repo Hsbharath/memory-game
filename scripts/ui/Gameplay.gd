@@ -7,6 +7,7 @@ var round_number: int = 0
 @onready var round_label: Label = $HUDBar/HBoxContainer/RoundLabel
 @onready var score_label: Label = $HUDBar/HBoxContainer/ScoreLabel
 @onready var combo_label: Label = $HUDBar/HBoxContainer/ComboLabel
+@onready var preview_timer_label: Label = $HUDBar/HBoxContainer/PreviewTimerLabel
 @onready var timer_label: Label = $HUDBar/HBoxContainer/TimerLabel
 @onready var hints_label: Label = $HUDBar/HBoxContainer/HintsLabel
 @onready var hint_button: Button = $HUDBar/HBoxContainer/HintButton
@@ -30,6 +31,7 @@ func _ready() -> void:
 	pause_panel.visible = false
 	complete_panel.visible = false
 	combo_label.visible = false
+	preview_timer_label.visible = false
 
 	hint_button.pressed.connect(_on_hint)
 	pause_button.pressed.connect(_on_pause)
@@ -45,6 +47,8 @@ func _ready() -> void:
 	GameState.score_changed.connect(_on_score_changed)
 	GameState.combo_changed.connect(_on_combo_changed)
 	GameState.timer_tick.connect(_on_timer_tick)
+	GameState.preview_tick.connect(_on_preview_tick)
+	GameState.preview_ended.connect(_on_preview_ended)
 	GameState.hints_changed.connect(_on_hints_changed)
 	GameState.round_completed.connect(_on_round_completed)
 
@@ -67,14 +71,36 @@ func _start_round() -> void:
 	score_label.text = "0"
 	var hints = config.get("hintCount", 0)
 	hints_label.text = "Hints: %d" % hints
-	hint_button.disabled = hints == 0
-	timer_label.visible = config.get("timerSeconds", 0) > 0
+	hint_button.disabled = true
+	timer_label.visible = false
 
 	GameState.start_round(continent_id, round_number, config)
 	board.build(continent_id, round_number)
 
-	var preview_secs = config.get("previewSeconds", 3.0)
-	await board.preview(preview_secs)
+	var preview_secs = config.get("previewSeconds", 5.0)
+	preview_timer_label.visible = true
+	preview_timer_label.text = "Preview: %d" % int(preview_secs)
+	if round_number == 10:
+		preview_timer_label.text = "?! %d" % int(preview_secs)
+		board.blink_preview(preview_secs, 2)
+	elif round_number == 9:
+		preview_timer_label.text = "?! %d" % int(preview_secs)
+		board.blink_preview(preview_secs, 4)
+	else:
+		board.show_all_cards()
+	GameState.start_preview(preview_secs)
+
+func _on_preview_tick(seconds: float) -> void:
+	preview_timer_label.text = "Preview: %d" % int(ceil(seconds))
+
+func _on_preview_ended() -> void:
+	preview_timer_label.visible = false
+	board.hide_all_cards()
+	var config = DataRepository.get_round_config(continent_id, round_number)
+	var hints = config.get("hintCount", 0)
+	hint_button.disabled = hints == 0
+	timer_label.visible = config.get("timerSeconds", 0) > 0
+	GameState.begin_solve_timer()
 
 func _on_score_changed(score: int) -> void:
 	score_label.text = str(score)

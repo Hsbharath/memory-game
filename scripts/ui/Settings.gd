@@ -1,13 +1,18 @@
 extends Control
 
+const BACK_PATH = "res://assets/images/back.png"
+
 @onready var master_slider: HSlider = $Panel/VBoxContainer/MasterVolume/HSlider
 @onready var music_slider: HSlider = $Panel/VBoxContainer/MusicVolume/HSlider
 @onready var sfx_slider: HSlider = $Panel/VBoxContainer/SFXVolume/HSlider
 @onready var high_contrast_check: CheckButton = $Panel/VBoxContainer/HighContrast/CheckButton
 @onready var reduced_motion_check: CheckButton = $Panel/VBoxContainer/ReducedMotion/CheckButton
 @onready var back_button: Button = $BackButton
+@onready var back_icon: TextureRect = $BackButton/BackIcon
 
 func _ready() -> void:
+	if ResourceLoader.exists(BACK_PATH):
+		back_icon.texture = load(BACK_PATH)
 	master_slider.value = SaveSystem.get_setting("master_volume")
 	music_slider.value = SaveSystem.get_setting("music_volume")
 	sfx_slider.value = SaveSystem.get_setting("sfx_volume")

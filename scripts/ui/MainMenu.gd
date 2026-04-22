@@ -1,9 +1,9 @@
 extends Control
 
 const LOGO_PATH     = "res://assets/images/memory_map.jpeg"
-const PLAY_PATH     = "res://assets/images/play.jpeg"
-const SETTINGS_PATH = "res://assets/images/settings.jpeg"
-const QUIT_PATH     = "res://assets/images/end.jpeg"
+const PLAY_PATH     = "res://assets/images/play.png"
+const SETTINGS_PATH = "res://assets/images/Settings.png"
+const QUIT_PATH     = "res://assets/images/quit.png"
 
 @onready var logo:            TextureRect = $Logo
 @onready var play_button:     Button      = $PlayButton

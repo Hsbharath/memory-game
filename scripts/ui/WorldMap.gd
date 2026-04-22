@@ -1,11 +1,15 @@
 extends Control
 
 const CONTINENT_BUTTON_SCENE = preload("res://scenes/components/ContinentButton.tscn")
+const BACK_PATH = "res://assets/images/back.png"
 
 @onready var continents_container: GridContainer = $ScrollContainer/CenterWrapper/ContinentsContainer
 @onready var back_button: Button = $BackButton
+@onready var back_icon: TextureRect = $BackButton/BackIcon
 
 func _ready() -> void:
+	if ResourceLoader.exists(BACK_PATH):
+		back_icon.texture = load(BACK_PATH)
 	back_button.pressed.connect(_on_back)
 	_populate_continents()
 

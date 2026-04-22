@@ -54,10 +54,18 @@ modulate = Color(1, 0.9, 0.1, 1)
 theme_override_font_sizes/font_size = 16
 visible = false
 
+[node name="PreviewTimerLabel" type="Label" parent="HUDBar/HBoxContainer"]
+layout_mode = 2
+text = "Preview: 5"
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
+visible = false
+
 [node name="TimerLabel" type="Label" parent="HUDBar/HBoxContainer"]
 layout_mode = 2
 text = "2:00"
 theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
 visible = false
 
 [node name="HintsLabel" type="Label" parent="HUDBar/HBoxContainer"]

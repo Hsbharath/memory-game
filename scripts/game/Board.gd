@@ -69,15 +69,51 @@ func build(continent_id: String, round_number: int) -> void:
 			_cards.append(card)
 			image_cursor += 1
 
-func preview(seconds: float) -> void:
+func show_all_cards() -> void:
 	for card in _cards:
+		if card.state == Card.State.MATCHED:
+			continue
+		card.state = Card.State.FACE_DOWN
+		card.button.disabled = true
 		card.flip_up(false)
-	await get_tree().create_timer(seconds).timeout
-	for card in _cards:
-		if card.state != Card.State.MATCHED:
-			card.flip_down(false)
+
+func blink_preview(total_seconds: float, min_count: int = 4) -> void:
+	# Show min_count..min_count+2 random cards at a time, each batch stays open for 5 seconds
+	const SHOW_DURATION = 5.0
+	var elapsed = 0.0
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	while elapsed < total_seconds:
+		var count = rng.randi_range(min_count, min_count + 2)
+		var pool = _cards.filter(func(c): return c.state == Card.State.FACE_DOWN)
+		if pool.is_empty():
+			break
+		pool.shuffle()
+		var batch = pool.slice(0, min(count, pool.size()))
+		for card in batch:
 			card.state = Card.State.FACE_DOWN
-			card.button.disabled = false
+			card.button.disabled = true
+			card.flip_up(false)
+		var wait = minf(SHOW_DURATION, total_seconds - elapsed)
+		await get_tree().create_timer(wait).timeout
+		elapsed += wait
+		for card in batch:
+			if card.state == Card.State.FACE_UP:
+				card.state = Card.State.FACE_UP
+				card.button.disabled = false
+				card.flip_down(false)
+		# Small gap between batches
+		if elapsed < total_seconds:
+			await get_tree().create_timer(0.3).timeout
+			elapsed += 0.3
+
+func hide_all_cards() -> void:
+	for card in _cards:
+		if card.state == Card.State.MATCHED:
+			continue
+		card.state = Card.State.FACE_UP
+		card.button.disabled = false
+		card.flip_down(false)
 
 func reveal_hint() -> void:
 	var unmatched = _cards.filter(func(c): return c.state == Card.State.FACE_DOWN)

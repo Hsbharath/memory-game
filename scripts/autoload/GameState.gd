@@ -7,6 +7,8 @@ signal score_changed(new_score: int)
 signal combo_changed(combo: int)
 signal hints_changed(hints_remaining: int)
 signal timer_tick(seconds_remaining: float)
+signal preview_tick(seconds_remaining: float)
+signal preview_ended
 
 const CONTINENT_ORDER = [
 	"africa", "asia", "europe", "north_america",
@@ -29,8 +31,21 @@ var total_pairs: int = 0
 var attempts: int = 0
 
 var _timer: float = 0.0
+var _preview_timer: float = 0.0
+var _is_preview_active: bool = false
 
 func _process(delta: float) -> void:
+	if _is_preview_active:
+		_preview_timer -= delta
+		if _preview_timer <= 0.0:
+			_preview_timer = 0.0
+			_is_preview_active = false
+			preview_tick.emit(0.0)
+			preview_ended.emit()
+		else:
+			preview_tick.emit(_preview_timer)
+		return
+
 	if not is_timer_active or timer_seconds <= 0.0:
 		return
 	_timer -= delta
@@ -52,8 +67,16 @@ func start_round(continent_id: String, round_number: int, config: Dictionary) ->
 	hints_remaining = config.get("hintCount", 0)
 	timer_seconds = config.get("timerSeconds", 0)
 	_timer = timer_seconds
-	is_timer_active = timer_seconds > 0
+	is_timer_active = false
 	round_started.emit(continent_id, round_number)
+
+func start_preview(seconds: float) -> void:
+	_preview_timer = seconds
+	_is_preview_active = true
+
+func begin_solve_timer() -> void:
+	if timer_seconds > 0:
+		is_timer_active = true
 
 func register_match(base_points: int = 100) -> void:
 	current_combo += 1
